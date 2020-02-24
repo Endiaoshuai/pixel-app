@@ -139,8 +139,10 @@
     ],
     "rules": {
       "no-console": "off",
+      "no-return-await": "off",
       "simple-import-sort/sort": "error",
       "import/prefer-default-export": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
       "import/extensions": [
         "error",
         "always",

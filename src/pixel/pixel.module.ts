@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
-import { PixelService } from './pixel.service';
-import { PixelController } from './pixel.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { ShopModule } from '../shop/shop.module';
+import { Pixel } from './pixel.entity';
+import { PixelResolver } from './pixel.resolver';
+import { PixelService } from './pixel.service';
 @Module({
-  providers: [PixelService],
-  controllers: [PixelController]
+  imports: [TypeOrmModule.forFeature([Pixel]), ShopModule],
+
+  controllers: [],
+  providers: [PixelService, PixelResolver],
 })
 export class PixelModule {}

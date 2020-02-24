@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from './config/config.module';
+import { InstallModule } from './install/install.module';
 import { PixelModule } from './pixel/pixel.module';
 import { ShopModule } from './shop/shop.module';
 import { UserModule } from './user/user.module';
@@ -24,6 +25,7 @@ import { UserModule } from './user/user.module';
       context: ({ req }) => ({ req }),
     }),
     ShopModule,
+    InstallModule,
     PixelModule,
   ],
   controllers: [AppController],

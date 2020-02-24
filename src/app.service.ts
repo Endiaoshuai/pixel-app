@@ -4,13 +4,13 @@ import { ConfigService } from './config/config.service';
 
 @Injectable()
 export class AppService {
-  private jwtSecret: string;
+  private port: string;
 
   constructor(config: ConfigService) {
-    this.jwtSecret = config.get('JWT_SECRET');
+    this.port = config.get('PORT');
   }
 
   getHello(): string {
-    return `Hello World! ${this.jwtSecret}`;
+    return `Hello World! ${this.port}`;
   }
 }

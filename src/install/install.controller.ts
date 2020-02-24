@@ -1,3 +1,4 @@
+/* eslint-disable no-return-await */
 /* eslint-disable @typescript-eslint/camelcase */
 import 'dotenv/config';
 
@@ -9,15 +10,17 @@ import {
   Request,
   Response,
 } from '@nestjs/common';
+// import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
 import * as cookie from 'cookie';
 import * as crypto from 'crypto';
 import * as querystring from 'querystring';
 
-import { Shopify } from './dtos/shopify.dto';
-
+// import { Repository } from 'typeorm';
+import { Shop } from '../shop/shop.entity';
+import { ShopService } from '../shop/shop.service';
 @Controller()
-export class PixelController {
+export class InstallController {
   private readonly forwardingAddress = 'https://f8ff32b6.ngrok.io';
 
   private readonly apiKey = process.env.SHOPIFY_API_KEY;
@@ -31,12 +34,16 @@ export class PixelController {
     write_customers,
     write_themes`;
 
+  constructor(private readonly shopService: ShopService) {
+    return this;
+  }
+
+  // 安装应用
   @Get('/shopify')
-  shopify(@Query() query: Shopify, @Response() res): void {
+  shopify(@Query() query, @Response() res): void {
     const { shop } = query;
     if (shop) {
       const state = new Date().getTime();
-      console.log(state);
       const redirectUri = `${this.forwardingAddress}/shopify/callback`;
       const installUrl = `https://${shop}/admin/oauth/authorize?client_id=${this.apiKey}&scope=${this.scopes}&state=${state}&redirect_uri=${redirectUri}`;
       res.cookie('state', state);
@@ -50,7 +57,7 @@ export class PixelController {
   }
 
   @Get('/shopify/callback')
-  async callback(@Query() query, @Request() req): Promise<string> {
+  async callback(@Query() query, @Request() req): Promise<Shop> {
     console.log('callback');
     const { shop, hmac, code, state } = query;
     const stateCookie = cookie.parse(req.headers.cookie).state;
@@ -107,7 +114,7 @@ export class PixelController {
       });
       this.accessToken = getAccessToken.data.access_token;
     } catch (error) {
-      throw new HttpException(error.response.data, error.state);
+      throw new HttpException(error.response.data, 403);
     }
 
     const shopRequestUrl = `https://${shop}/admin/api/2020-01/shop.json`;
@@ -119,6 +126,22 @@ export class PixelController {
       headers: shopRequestHeaders,
     });
 
-    return shopInfo.data;
+    const {
+      id,
+      email,
+      domain,
+      accessToken = this.accessToken,
+      primaryDomain,
+    } = shopInfo.data.shop;
+
+    console.log({ id, email, domain, accessToken });
+
+    return await this.shopService.addShop({
+      id,
+      email,
+      domain,
+      accessToken,
+      primaryDomain,
+    });
   }
 }
