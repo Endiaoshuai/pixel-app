@@ -30,7 +30,7 @@
     "@nestjs/platform-express": "^6.10.12",
     "@nestjs/serve-static": "^1.0.2",
     "@nestjs/typeorm": "^6.2.0",
-    "apollo-server-express": "^2.9.14",
+    "apollo-server-express": "^2.14.2",
     "apollo-server-fastify": "^2.9.16",
     "axios": "^0.18.1",
     "axios-retry": "^3.1.2",
