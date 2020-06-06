@@ -31,7 +31,7 @@
     "@nestjs/serve-static": "^1.0.2",
     "@nestjs/typeorm": "^6.2.0",
     "apollo-server-express": "^2.9.14",
-    "apollo-server-fastify": "^2.9.16",
+    "apollo-server-fastify": "^2.14.2",
     "axios": "^0.18.1",
     "axios-retry": "^3.1.2",
     "bcryptjs": "^2.4.3",
