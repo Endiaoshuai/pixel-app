@@ -59,7 +59,7 @@
     "rxjs": "^6.5.3",
     "source-map-support": "^0.5.16",
     "type-graphql": "^0.17.6",
-    "typeorm": "^0.2.22",
+    "typeorm": "^0.2.25",
     "typeorm-snake-naming-strategy": "^1.0.1"
   },
   "devDependencies": {
